@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <div class="dashboard-container">
+        <h1>Welcome, {{ name }}!</h1>
+        
+        <div class="dashboard-buttons">
+            <!-- Add Vehicle Button -->
+            <a href="#" class="btn">Add Vehicle Details</a>
+            
+            <!-- Inspect Vehicle Button -->
+            <a href="#" class="btn">Inspect Vehicle</a>
+            
+            <!-- View Previous Reports Button -->
+            <a href="#" class="btn">View Previous Reports</a>
+
+            <!-- User Management Settings Button -->
+            <a href="#" class="btn">User Management Settings</a> 
+        </div>
+    </div>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
+        }
+        .dashboard-container {
+            text-align: center;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 30px;
+        }
+        .dashboard-buttons .btn {
+            display: block;
+            margin: 10px 0;
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .dashboard-buttons .btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</body>
+</html>

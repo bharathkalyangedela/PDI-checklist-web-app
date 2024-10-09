@@ -2,7 +2,7 @@ from flask import render_template, redirect, url_for, flash
 from app import app, db, bcrypt
 from app.forms import RegistrationForm, LoginForm
 from app.models import User
-from flask_login import login_user, logout_user, login_required
+from flask_login import login_user, logout_user, login_required, fresh_login_required, current_user
 
 @app.route('/')
 @app.route('/home')
@@ -35,11 +35,12 @@ def login():
         user = User.query.filter_by(email=form.email.data).first()
         if user and bcrypt.check_password_hash(user.password, form.password.data):
             login_user(user)
-            return redirect(url_for('success'))
+            return redirect(url_for('dashboard'))
         else:
             flash('Login unsuccessful. Please check email and password', 'danger')
     return render_template('login.html', form=form)
 
-@app.route('/success')
-def success():
-    return render_template('S.html')
+@app.route("/dashboard")
+@login_required
+def dashboard():
+    return render_template('dashboard.html', name=current_user.username)
