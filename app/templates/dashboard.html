@@ -6,12 +6,26 @@
     <title>Dashboard</title>
 </head>
 <body>
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <div>
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}
+        {% endblock %}
+    </div>
     <div class="dashboard-container">
         <h1>Welcome, {{ name }}!</h1>
         
         <div class="dashboard-buttons">
             <!-- Add Vehicle Button -->
-            <a href="#" class="btn">Add Vehicle Details</a>
+            <a href="{{ url_for('add_vehicle') }}" class="btn">Add Vehicle Details</a>
             
             <!-- Inspect Vehicle Button -->
             <a href="#" class="btn">Inspect Vehicle</a>

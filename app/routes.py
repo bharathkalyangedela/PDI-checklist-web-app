@@ -3,6 +3,8 @@ from app import app, db, bcrypt
 from app.forms import RegistrationForm, LoginForm
 from app.models import User
 from flask_login import login_user, logout_user, login_required, fresh_login_required, current_user
+from app.forms import AddVehicleForm
+from app.models import Vehicle
 
 @app.route('/')
 @app.route('/home')
@@ -44,3 +46,25 @@ def login():
 @login_required
 def dashboard():
     return render_template('dashboard.html', name=current_user.username)
+
+@app.route("/add_vehicle", methods=['GET', 'POST'])
+@login_required
+def add_vehicle():
+    form = AddVehicleForm()
+    if form.validate_on_submit():
+        # Create a new vehicle instance
+        vehicle = Vehicle(
+            user_id=current_user.id,
+            car_name=form.car_name.data,
+            car_model=form.car_model.data,
+            manufacture_year=form.manufacture_year.data,
+            vin=form.vin.data,
+            license_plate=form.license_plate.data,
+            color=form.color.data
+        )
+        # Add vehicle to the database
+        db.session.add(vehicle)
+        db.session.commit()
+        flash('Vehicle added successfully!', 'success')
+        return redirect(url_for('dashboard'))  # Redirect to dashboard after successful submission
+    return render_template('add_vehicle.html', form=form)
