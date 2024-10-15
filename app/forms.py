@@ -1,5 +1,5 @@
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, IntegerField, SelectField, TextAreaField, RadioField
 from wtforms.validators import DataRequired, Length, Email, EqualTo
 
 class RegistrationForm(FlaskForm):
@@ -22,3 +22,12 @@ class AddVehicleForm(FlaskForm):
     license_plate = StringField('License Plate Number', validators=[DataRequired(), Length(min=2, max=10)])
     color = StringField('Color', validators=[DataRequired(), Length(min=2, max=20)])
     submit = SubmitField('Add Vehicle')
+
+class InspectForm(FlaskForm):
+    exterior = RadioField('Exterior Condition', choices=[('good', 'Good'), ('bad', 'Bad')], validators=[DataRequired()])
+    interior = RadioField('Interior Condition', choices=[('good', 'Good'), ('bad', 'Bad')], validators=[DataRequired()])
+    under_hood = RadioField('Under Hood', choices=[('good', 'Good'), ('bad', 'Bad')], validators=[DataRequired()])
+    functional = RadioField('Functional Condition', choices=[('good', 'Good'), ('bad', 'Bad')], validators=[DataRequired()])
+    safety = RadioField('Safety Equipment', choices=[('good', 'Good'), ('bad', 'Bad')], validators=[DataRequired()])
+    notes = TextAreaField('Additional Notes')
+    submit = SubmitField('Submit Inspection')

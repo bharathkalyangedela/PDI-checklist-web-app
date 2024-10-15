@@ -1,10 +1,9 @@
-from flask import render_template, redirect, url_for, flash
+from flask import render_template, redirect, url_for, flash, request
 from app import app, db, bcrypt
 from app.forms import RegistrationForm, LoginForm
-from app.models import User
+from app.models import User, Vehicle, Inspection
 from flask_login import login_user, logout_user, login_required, fresh_login_required, current_user
-from app.forms import AddVehicleForm
-from app.models import Vehicle
+from app.forms import AddVehicleForm, InspectForm
 
 @app.route('/')
 @app.route('/home')
@@ -68,3 +67,30 @@ def add_vehicle():
         flash('Vehicle added successfully!', 'success')
         return redirect(url_for('dashboard'))  # Redirect to dashboard after successful submission
     return render_template('add_vehicle.html', form=form)
+
+@app.route("/inspect", methods=['GET', 'POST'])
+@login_required
+def inspect():
+    vehicles = Vehicle.query.filter_by(user_id=current_user.id).all()
+    form = InspectForm()
+    
+    if request.method == 'POST':
+        selected_vehicle = request.form.get('vehicle')
+        # Perform inspection logic
+        if form.validate_on_submit():
+            inspection = Inspection(
+                vehicle_id=selected_vehicle,
+                exterior=form.exterior.data,
+                interior=form.interior.data,
+                under_hood=form.under_hood.data,
+                functional=form.functional.data,
+                safety=form.safety.data,
+                notes=form.notes.data,
+                user_id=current_user.id
+            )
+            db.session.add(inspection)
+            db.session.commit()
+            flash('Vehicle Inspection completed successfully', 'success')
+            return redirect(url_for('dashboard'))
+
+    return render_template('inspect.html', title='Inspect Vehicle', form=form, vehicles=vehicles)

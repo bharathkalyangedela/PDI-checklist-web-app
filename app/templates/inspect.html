@@ -1,0 +1,82 @@
+{% extends "layout.html" %}
+{% block content %}
+  <h2>Inspect Vehicle</h2>
+  <form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <div class="form-group">
+      <label for="vehicle">Select Vehicle:</label>
+      {% if vehicles %}
+      <select id="vehicle" name="vehicle_id">
+        <option value="">-- Select Vehicle --</option>
+        {% for vehicle in vehicles %}
+            <option value="{{ vehicle.id }}">{{ vehicle.car_name }} - {{ vehicle.car_model }}</option>
+        {% endfor %}
+      </select>
+      {% else %}
+        <p>No vehicles added yet. Please add a vehicle first.</p>
+      {% endif %}
+    </div>
+
+    <h4>Exterior Inspection</h4>
+    <div class="form-group">
+      {{ form.exterior.label(class="form-label") }}
+      {{ form.exterior(class="form-control") }}
+      {% if form.exterior.errors %}
+        <div class="text-danger">{{ form.exterior.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <h4>Interior Inspection</h4>
+    <div class="form-group">
+      {{ form.interior.label(class="form-label") }}
+      {{ form.interior(class="form-control") }}
+      {% if form.interior.errors %}
+        <div class="text-danger">{{ form.interior.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <h4>Under the Hood Inspection</h4>
+    <div class="form-group">
+      {{ form.under_hood.label(class="form-label") }}
+      {{ form.under_hood(class="form-control") }}
+      {% if form.under_hood.errors %}
+        <div class="text-danger">{{ form.under_hood.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <h4>Functional Inspection</h4>
+    <div class="form-group">
+      {{ form.functional.label(class="form-label") }}
+      {{ form.functional(class="form-control") }}
+      {% if form.functional.errors %}
+        <div class="text-danger">{{ form.functional.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <h4>Safety Equipment Inspection</h4>
+    <div class="form-group">
+      {{ form.safety.label(class="form-label") }}
+      {{ form.safety(class="form-control") }}
+      {% if form.safety.errors %}
+        <div class="text-danger">{{ form.safety.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <h4>Notes and Photos</h4>
+    <div class="form-group">
+      {{ form.notes.label(class="form-label") }}
+      {{ form.notes(class="form-control", rows=3) }}
+      {% if form.notes.errors %}
+        <div class="text-danger">{{ form.notes.errors[0] }}</div>
+      {% endif %}
+    </div>
+
+    <div class="form-group">
+      <label for="photos">Upload Photos (Optional)</label>
+      <input type="file" name="photos" multiple class="form-control">
+    </div>
+
+    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+  </form>
+{% endblock %}
