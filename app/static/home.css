@@ -3,33 +3,18 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    
 }
 
 /* Body Styling */
 body {
     font-family:Verdana, Geneva, Tahoma, sans-serif;
-    background-image:url('https://images.pexels.com/photos/4488667/pexels-photo-4488667.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
+    background-image:url('https://images.pexels.com/photos/4488642/pexels-photo-4488642.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     height: 100vh;
 }
 
-/* Navbar */
-.navbar {
-    width: 100%;
-    background-color: #d3d3d33b;
-    padding: 10px;
-    text-align: left;
-    padding-left: 20px;
-}
-
-.navbar h1 {
-    font-size: 28px;
-    font-weight: lighter;
-    color: rgb(255, 255, 255);
-}
 
 /* Flash Message */
 .flash-container {
@@ -70,70 +55,45 @@ body {
     color: #155724;
 }
 
-/* Sign Up Box */
-.signup-box {
-    width: 500px;
-    margin: 200px auto;
+/* Home Box */
+.home-box {
+    width: 600px;
+    margin: 400px auto;
     padding: 30px;
     background-color: #000000b5;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.signup-box h2 {
-    font-size: 24px;
-    margin-bottom: 20px;
-    color: white;
+.home-box h2 {
+    font-size: 28px;
+    font-weight: bold;
+    color: rgb(255, 255, 255);
+    margin-bottom: 30px;
 }
 
-.form-group {
-    margin-bottom: 15px;
-    text-align: left;
-}
-
-.form-group label {
-    font-size: 14px;
-    color: white;
-}
-
-.form-group input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    background-color: #cdd4fc52;
-    color: white;
-    margin-top: 5px;
+/* Button Group */
+.btn-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .btn {
-    width: 100%;
     padding: 10px;
-    font-size: 16px;
+    font-size: 18px;
+    color: black;
     background-color: #87cdeb;
     border: none;
-    border-radius: 4px;
+    border-radius: 5px;
+    width: 200px;
+    text-align: center;
     cursor: pointer;
-    margin-top: 10px;
+    transition: background-color 0.3s;
+    margin: 0 auto;
 }
 
 .btn:hover {
     background-color: #ffb2b2;
-}
-
-p {
-    color: white;
-    font-size: 14px;
-    margin-top: 10px;
-}
-
-p a {
-    color: white;
-    text-decoration: underline;
-}
-
-p a:hover {
-    color: #87cdeb;
 }

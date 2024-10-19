@@ -70,42 +70,40 @@ body {
     color: #155724;
 }
 
-/* Sign Up Box */
-.signup-box {
+/* Container styling */
+.login-box {
     width: 500px;
-    margin: 200px auto;
-    padding: 30px;
+    margin: 300px auto;
+    padding: 20px;
     background-color: #000000b5;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
+    border-radius: 10px;
 }
 
-.signup-box h2 {
-    font-size: 24px;
+/* Login box styling */
+.login-box h1 {
+    text-align: center;
     margin-bottom: 20px;
     color: white;
 }
 
 .form-group {
     margin-bottom: 15px;
-    text-align: left;
 }
 
 .form-group label {
-    font-size: 14px;
+    display: block;
+    font-size: 16px;
     color: white;
+    margin-bottom: 5px;
 }
 
-.form-group input {
+.form-input {
     width: 100%;
     padding: 10px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
     background-color: #cdd4fc52;
     color: white;
-    margin-top: 5px;
+    border-radius: 4px;
+    font-size: 14px;
 }
 
 .btn {
@@ -113,14 +111,34 @@ body {
     padding: 10px;
     font-size: 16px;
     background-color: #87cdeb;
+    color: #000000;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    margin-top: 10px;
 }
 
 .btn:hover {
     background-color: #ffb2b2;
+}
+
+/* Flash message container */
+.alert-container {
+    margin-bottom: 20px;
+}
+
+.alert {
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    color: #fff;
+}
+
+.alert-danger {
+    background-color: #dc3545;
+}
+
+.alert-success {
+    background-color: #28a745;
 }
 
 p {
@@ -137,3 +155,4 @@ p a {
 p a:hover {
     color: #87cdeb;
 }
+

@@ -3,25 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home</title>
+    <title>Car Checker - Home</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
 </head>
 <body>
+    <!-- Flash Message Section -->
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
-                <div>
+                <div class="flash-container">
                     {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
                     {% endfor %}
                 </div>
             {% endif %}
         {% endwith %}
-        
-        {% block content %}
-        {% endblock %}
     </div>
-    <h1>Home Page</h1>
-    <a href="{{ url_for('register') }}">Register</a>
-    <a href="{{ url_for('login') }}">Login</a>
+
+    <!-- Main Content -->
+    <div class="home-box">
+        <h2>Kar's PDI Checklist</h2>
+        <div class="btn-group">
+            <a href="{{ url_for('login') }}" class="btn">Login</a>
+            <a href="{{ url_for('register') }}" class="btn">Register</a>
+        </div>
+    </div>
 </body>
 </html>

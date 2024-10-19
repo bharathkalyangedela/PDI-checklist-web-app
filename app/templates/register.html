@@ -3,31 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register</title>
+    <title>Sign Up</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        {% with messages = get_flashed_messages(with_categories=True) %}
-            {% if messages %}
-                <div>
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-        
-        {% block content %}
-        {% endblock %}
+    <!-- Navbar -->
+    <nav class="navbar">
+        <h1>Kar's PDI Checklist</h1>
+    </nav>
+
+    <!-- Flash Message Section -->
+    {% with messages = get_flashed_messages(with_categories=True) %}
+        {% if messages %}
+            <div class="flash-container">
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                        {{ message }}
+                        <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    <!-- Sign Up Form Section -->
+    <div class="signup-box">
+        <h2>Sign Up</h2>
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            <div class="form-group">
+                <label for="username">{{ form.username.label }}</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label for="email">{{ form.email.label }}</label>
+                {{ form.email }}
+            </div>
+
+            <div class="form-group">
+                <label for="password">{{ form.password.label }}</label>
+                {{ form.password }}
+            </div>
+
+            <div class="form-group">
+                <label for="confirm_password">{{ form.confirm_password.label }}</label>
+                {{ form.confirm_password }}
+            </div>
+
+            <button type="submit" class="btn">Sign Up</button>
+        </form>
+
+        <p>Have an account? <a href="{{ url_for('login') }}">Log In</a></p>
     </div>
-    <h1>Register</h1>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-        <p>{{ form.username.label }} {{ form.username }}</p>
-        <p>{{ form.email.label }} {{ form.email }}</p>
-        <p>{{ form.password.label }} {{ form.password }}</p>
-        <p>{{ form.confirm_password.label }} {{ form.confirm_password }}</p>
-        <p>{{ form.submit }}</p>
-    </form>
 </body>
 </html>
