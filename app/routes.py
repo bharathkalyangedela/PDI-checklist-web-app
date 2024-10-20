@@ -115,9 +115,9 @@ def inspect():
             hood_functionality=form.hood_functionality.data,
             front_windshield_condition=form.front_windshield_condition.data,
             windshield_sealing=form.windshield_sealing.data,
-            windshield_wipers=form.windshield_wipers_functionality,
+            windshield_wipers=form.windshield_wipers_functionality.data,
             windshield_clarity=form.windshield_clarity.data,
-            roof_noise=form.roof_noise,
+            roof_noise=form.roof_noise.data,
             roof_condition=form.roof_condition.data,
             roof_rail=form.roof_rails.data,
             rear_windshield_condition=form.rear_windshield_condition.data,
@@ -144,8 +144,31 @@ def inspect():
         db.session.add(inspection)
         try:
             db.session.commit()
+
+             # Calculate pass/fail percentages
+            pass_count = 0
+            fail_count = 0
+            results = {}
+
+            # Define the fail criteria (what counts as a defect)
+            fail_criteria = ['Defect', 'No', 'Defects', 'Hard', 'Not Working', 'Faulty', 'Scratches', 'Blurry', 'Damaged', 'Low', 'Old', 'Worn Out']
+
+            # Count passed/failed fields
+            for field, value in form.data.items():
+                if field != 'csrf_token' and value in fail_criteria:
+                    fail_count += 1
+                    results[field] = value
+                else:
+                    pass_count += 1
+
+            total_tests = pass_count + fail_count
+            pass_percentage = (pass_count / total_tests) * 100
+            fail_percentage = (fail_count / total_tests) * 100
+
+            # Redirect to the report page with the calculated data
             flash('Vehicle inspection recorded successfully.', 'success')
-            return redirect(url_for('dashboard'))
+            return redirect(url_for('report', pass_percentage=pass_percentage, fail_percentage=fail_percentage, results=results))
+            
         except Exception as e:
             db.session.rollback()  # Rollback the session if an error occurs
             print(f"Error during commit: {e}")  # Print the error message
@@ -159,30 +182,30 @@ def inspect():
 
     return render_template('inspect.html', form=form, vehicles=vehicles)
 
-@app.route('/inspection/<int:inspection_id>')
-@login_required
-def view_inspection(inspection_id):
-    inspection = Inspection.query.get_or_404(inspection_id)
-    return render_template('inspection_detail.html', inspection=inspection)
 
-@app.route('/report', methods=['GET'])
+@app.route('/report')
+@login_required
 def report():
-    inspections = Inspection.query.all()  # Fetch all inspection records
-    total_tests = len(inspections)
-    passed_tests = sum(1 for inspection in inspections if inspection.is_passed)  # Check if tests passed
-    failed_tests = total_tests - passed_tests
-    
-    # Prepare defect report
-    defects = []
-    for inspection in inspections:
-        if not inspection.is_passed:
-            defects.append(inspection.defect_report)  # Assuming there's a field for defect report
-    
-    # Calculate percentages
-    passed_percentage = (passed_tests / total_tests * 100) if total_tests > 0 else 0
-    failed_percentage = 100 - passed_percentage
-    
-    return render_template('report.html', 
-                           passed_percentage=passed_percentage, 
-                           failed_percentage=failed_percentage, 
-                           defects=defects)
+    pass_percentage = float(request.args.get('pass_percentage', 0))
+    fail_percentage = float(request.args.get('fail_percentage', 0))
+    results = request.args.get('results', {})
+
+    # Generate pie chart
+    labels = ['Pass', 'Fail']
+    sizes = [pass_percentage, fail_percentage]
+    colors = ['#00ff00', '#ff0000']
+    explode = (0.1, 0)  # explode the 'Pass' slice
+
+    fig, ax = plt.subplots()
+    ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
+           shadow=True, startangle=90)
+    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+
+    # Convert plot to PNG image and then to base64 string
+    img = io.BytesIO()
+    plt.savefig(img, format='png')
+    img.seek(0)
+    plot_url = base64.b64encode(img.getvalue()).decode()
+
+    # Show report page with pie chart and defects
+    return render_template('report.html', plot_url=plot_url, results=results)
