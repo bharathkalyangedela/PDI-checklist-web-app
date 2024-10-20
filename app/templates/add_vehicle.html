@@ -4,9 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Add Vehicle</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='add_vehilce.css') }}">
 </head>
 <body>
+    
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span class="app-name">Car Checker</span>
+        </div>
+        <div class="navbar-right">
+            <span class="user-name">{{ name }}</span>
+            <img src="{{ url_for('static', filename='img/user-icon.png') }}" alt="User Icon" class="user-icon" onclick="toggleUserMenu()">
+            <div id="user-menu" class="user-menu">
+                <a href="#">Profile Edit</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
+
     <div class="container">
         {% with messages = get_flashed_messages(with_categories=True) %}
             {% if messages %}
@@ -26,28 +41,28 @@
         <form method="POST" action="">
             {{ form.hidden_tag() }}
             <div class="form-group">
-                {{ form.car_name.label }}<br>
-                {{ form.car_name(class="form-control") }}
+                {{ form.brand.label }} 
+                {{ form.brand(class="form-control") }}
             </div>
             <div class="form-group">
-                {{ form.car_model.label }}<br>
-                {{ form.car_model(class="form-control") }}
+                {{ form.model.label }} 
+                {{ form.model(class="form-control") }}
             </div>
             <div class="form-group">
-                {{ form.manufacture_year.label }}<br>
-                {{ form.manufacture_year(class="form-control") }}
+                {{ form.year_of_manufacture.label }} 
+                {{ form.year_of_manufacture(class="form-control") }}
             </div>
             <div class="form-group">
-                {{ form.vin.label }}<br>
-                {{ form.vin(class="form-control") }}
-            </div>
-            <div class="form-group">
-                {{ form.license_plate.label }}<br>
-                {{ form.license_plate(class="form-control") }}
-            </div>
-            <div class="form-group">
-                {{ form.color.label }}<br>
+                {{ form.color.label }} 
                 {{ form.color(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.transmission_type.label }} 
+                {{ form.transmission_type(class="form-control") }}
+            </div>
+            <div class="form-group">
+                {{ form.fuel_type.label }} 
+                {{ form.fuel_type(class="form-control") }}
             </div>
             <div class="form-group">
                 {{ form.submit(class="btn btn-primary") }}
@@ -55,48 +70,22 @@
         </form>
     </div>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
+    <script>
+        function toggleUserMenu() {
+            var menu = document.getElementById('user-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
-        .form-container {
-            width: 400px;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        // Close the user menu when clicking outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-icon')) {
+                var menu = document.getElementById('user-menu');
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                }
+            }
         }
-        .form-container h1 {
-            text-align: center;
-            margin-bottom: 20px;
-        }
-        .form-group {
-            margin-bottom: 15px;
-        }
-        .form-control {
-            width: 100%;
-            padding: 10px;
-            margin-top: 5px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        .btn {
-            width: 100%;
-            padding: 10px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    </script>
+
 </body>
 </html>

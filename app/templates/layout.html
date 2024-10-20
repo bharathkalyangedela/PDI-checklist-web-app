@@ -4,12 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Vehicle Inspection{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='/styles.css') }}">
     <!-- Add Bootstrap or any other CSS files here -->
 </head>
 <body>
-    <nav>
         <!-- Add your navigation here -->
+        <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span class="app-name">Car Checker</span>
+        </div>
+        <div class="navbar-right">
+            <span class="user-name">{{ name }}</span>
+            <img src="{{ url_for('static', filename='img/user-icon.png') }}" alt="User Icon" class="user-icon" onclick="toggleUserMenu()">
+            <div id="user-menu" class="user-menu">
+                <a href="#">Profile Edit</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
     </nav>
+   
+    <div class="container">
+        {% with messages = get_flashed_messages(with_categories=True) %}
+            {% if messages %}
+                <div class="flash-container">
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}">
+                            {{ message }}
+                            <span class="close-btn" onclick="this.parentElement.style.display='none';">&times;</span>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+    </div>
 
     <div class="container">
         {% block content %}
@@ -20,5 +48,22 @@
     <footer>
         <!-- Footer content -->
     </footer>
+
+    <script>
+        function toggleUserMenu() {
+            var menu = document.getElementById('user-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+        }
+
+        // Close the user menu when clicking outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-icon')) {
+                var menu = document.getElementById('user-menu');
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 </html>

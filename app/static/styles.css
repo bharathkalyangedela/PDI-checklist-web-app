@@ -1,0 +1,140 @@
+/* General body styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+
+body {
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    background-image:url('https://images.pexels.com/photos/4488657/pexels-photo-4488657.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 100vh;
+}
+
+/* User menu dropdown */
+.user-menu {
+    display: none;
+    position: absolute;
+    right: 20px;
+    top: 60px;
+    background-color: rgba(125, 92, 92, 0.417);
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+    z-index: 1;
+}
+
+.user-menu a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+}
+
+.user-menu a:hover {
+    background-color: rgba(172, 129, 129, 0.417);
+}
+
+/* Flash Message */
+.flash-container {
+    width: 100%;
+    padding: 0 20px;
+    margin-bottom: 10px;
+}
+
+.alert {
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 10px;
+    margin-bottom: 15px;
+    position: relative;
+    border: 1px solid #f5c6cb;
+    border-radius: 5px;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.alert.success {
+    background-color: #d4edda;
+    color: #155724;
+    border-color: #c3e6cb;
+}
+
+.close-btn {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+    color: #721c24;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.alert.success .close-btn {
+    color: #155724;
+}
+
+.inspect-container {
+    margin: 20px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .inspection-section h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  
+  .inspection-item {
+    margin-bottom: 15px;
+  }
+  
+  .inspection-item label {
+    font-size: 16px;
+  }
+  
+  .radio-options {
+    margin-top: 5px;
+  }
+  
+  .form-check-input {
+    margin-right: 10px;
+  }
+  
+  textarea.form-control {
+    width: 100%;
+    resize: vertical;
+  }
+  
+  .btn-primary {
+    background-color: #007bff;
+    border-color: #007bff;
+    padding: 10px 20px;
+    font-size: 16px;
+  }
+  
+  a {
+    display: block;
+    margin-top: 10px;
+    color: #007bff;
+    text-decoration: none;
+  }
+  
+  a:hover {
+    text-decoration: underline;
+  }
+  

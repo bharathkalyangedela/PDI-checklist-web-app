@@ -1,82 +1,425 @@
 {% extends "layout.html" %}
 {% block content %}
-  <h2>Inspect Vehicle</h2>
-  <form method="POST" enctype="multipart/form-data">
-    {{ form.hidden_tag() }}
+  <div class="inspect-container">
+    <h2>Inspect your Vehicle</h2>
 
-    <div class="form-group">
-      <label for="vehicle">Select Vehicle:</label>
-      {% if vehicles %}
-      <select id="vehicle" name="vehicle_id">
-        <option value="">-- Select Vehicle --</option>
-        {% for vehicle in vehicles %}
-            <option value="{{ vehicle.id }}">{{ vehicle.car_name }} - {{ vehicle.car_model }}</option>
-        {% endfor %}
-      </select>
-      {% else %}
-        <p>No vehicles added yet. Please add a vehicle first.</p>
-      {% endif %}
+    <form method="POST" enctype="multipart/form-data">
+      {{ form.hidden_tag() }}
+
+      <!-- Vehicle Dropdown -->
+      <div class="form-group">
+        <label for="vehicle">Select Vehicle:</label>
+        {% if vehicles %}
+          <select id="vehicle" name="vehicle_id" class="form-control">
+              <option value="">-- Select Vehicle --</option>
+              {% for vehicle in vehicles %}
+                  <option value="{{ vehicle.id }}">{{ vehicle.brand }} - {{ vehicle.model }}</option>
+              {% endfor %}
+          </select>
+        {% else %}
+          <p>No vehicles found. Please add a vehicle first.</p>
+        {% endif %}
+        <a href="{{ url_for('add_vehicle') }}">List a new vehicle? Add here</a>
+      </div>
+
+      <!-- Interior Inspection Section -->
+      <!-- dashboard -->
+      <div class="inspection-section">
+        <h3>Interior</h3>
+        <div class="inspection-item">
+            <label>{{ form.dashboard_defects.label }}</label>
+            <div class="radio-options">
+                {{ form.dashboard_defects(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- seats -->
+        <div class="inspection-item">
+            <label>{{ form.seats_condition.label }}</label>
+            <div class="radio-options">
+                {{ form.seats_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>{{ form.seat_comfort.label }}</label>
+            <div class="radio-options">
+                {{ form.seat_comfort(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>{{ form.seatbelts.label }}</label>
+            <div class="radio-options">
+                {{ form.seatbelts(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!--Driver seats -->
+        <div class="inspection-item">
+            <label>{{ form.steering_condition.label }}</label>
+            <div class="radio-options">
+                {{ form.steering_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- Clutch Pedal Feel -->
+        <div class="inspection-item">
+          <label>{{ form.clutch_pedal.label }}</label>
+          <div class="radio-options">
+            {{ form.clutch_pedal(class="form-check-input") }}
+          </div>
+        </div>
+
+        <!-- Floor Mats Availability -->
+        <div class="inspection-item">
+          <label>{{ form.floor_mats.label }}</label>
+          <div class="radio-options">
+              {{ form.floor_mats(class="form-check-input") }}
+          </div>
+        </div>
+
+        <!-- Glove Box Functionality -->
+        <div class="inspection-item">
+          <label>{{ form.glove_box.label }}</label>
+          <div class="radio-options">
+              {{ form.glove_box(class="form-check-input") }}
+          </div>
+        </div>
+
+        <!-- Switch control -->
+
+        <div class="inspection-item">
+          <label>{{ form.headlight_switch.label }}</label>
+          <div class="radio-options">
+              {{ form.headlight_switch(class="form-check-input") }}
+          </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.turn_signal_switch.label }}</label>
+          <div class="radio-options">
+              {{ form.turn_signal_switch(class="form-check-input") }}
+          </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.hazard_light_switch.label }}</label>
+          <div class="radio-options">
+              {{ form.hazard_light_switch(class="form-check-input") }}
+          </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.wiper_switch.label }}</label>
+          <div class="radio-options">
+              {{ form.wiper_switch(class="form-check-input") }}
+          </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.audio_system_control.label }}</label>
+          <div class="radio-options">
+              {{ form.audio_system_control(class="form-check-input") }}
+          </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.switch_illumination.label }}</label>
+          <div class="radio-options">
+              {{ form.switch_illumination(class="form-check-input") }}
+          </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.fog_light_switch.label }}</label>
+          <div class="radio-options">
+              {{ form.fog_light_switch(class="form-check-input") }}
+          </div>
+        </div>
+      </div>
+
+      <!-- Exterior and other sections -->
+       
+      <!-- Front bumper -->
+      <div class="inspection-section">
+        <h3>Exterior</h3>
+        <div class="inspection-item">
+              <label>{{ form.front_bumper_condition.label }}</label>
+              <div class="radio-options">
+                  {{ form.front_bumper_condition(class="form-check-input") }}
+              </div>
+        </div>
+
+        <div class="inspection-item">
+              <label>{{ form.front_bumper_alignment.label }}</label>
+              <div class="radio-options">
+                  {{ form.front_bumper_alignment(class="form-check-input") }}
+              </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.bumper_scratches.label }}</label>
+          <div class="radio-options">
+              {{ form.bumper_scratches(class="form-check-input") }}
+          </div>
+        </div>
+
+        <div class="inspection-item">
+          <label>{{ form.fog_lights.label }}</label>
+          <div class="radio-options">
+              {{ form.fog_lights(class="form-check-input") }}
+          </div>
+        </div>
+      
+
+        <!-- Hood -->
+        <div class="inspection-item">
+            <label>1. Hood Condition (scratches, dents)</label>
+            <div class="radio-options">
+              {{ form.hood_condition.label }}<br>
+              {{ form.hood_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>2. Proper alignment of the hood</label>
+            <div class="radio-options">
+              {{ form.hood_alignment.label }}<br>
+              {{ form.hood_alignment(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>3. Functionality of the hood (locking mechanism)</label>
+            <div class="radio-options">
+              {{ form.hood_functionality.label }}<br>
+              {{ form.hood_functionality(class="form-check-input") }}
+            </div>
+        </div>
+
+          <!-- Front Windshield -->
+        <div class="inspection-item">
+            <label>4. Front Windshield Condition (scratches, cracks)</label>
+            <div class="radio-options">
+              {{ form.front_windshield_condition.label }}<br>
+              {{ form.front_windshield_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>5. Properly installed and sealed with rubber beadings</label>
+            <div class="radio-options">
+              {{ form.windshield_sealing.label }}<br>
+              {{ form.windshield_sealing(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>6. Functionality of windshield wipers</label>
+            <div class="radio-options">
+              {{ form.windshield_wipers_functionality.label }}<br>
+              {{ form.windshield_wipers_functionality(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>7. Windshield clarity and visibility</label>
+            <div class="radio-options">
+              {{ form.windshield_clarity.label }}<br>
+              {{ form.windshield_clarity(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- Roof -->
+        <div class="inspection-item">
+            <label>8. Roof Noise or Vibration</label>
+            <div class="radio-options">
+              {{ form.roof_noise.label }}<br>
+              {{ form.roof_noise(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>9. Roof Condition (scratches, dents)</label>
+            <div class="radio-options">
+              {{ form.roof_condition.label }}<br>
+              {{ form.roof_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>10. Wear and tear on roof rails</label>
+            <div class="radio-options">
+              {{ form.roof_rails.label }}<br>
+              {{ form.roof_rails(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- Rear Windshield -->
+        <div class="inspection-item">
+            <label>11. Rear Windshield Condition (scratches, cracks)</label>
+            <div class="radio-options">
+              {{ form.rear_windshield_condition.label }}<br>
+              {{ form.rear_windshield_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>12. Proper installation of rear windshield and rubber beadings</label>
+            <div class="radio-options">
+              {{ form.rear_windshield_sealing.label }}<br>
+              {{ form.rear_windshield_sealing(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>13. Rear windshield wipers functionality</label>
+            <div class="radio-options">
+              {{ form.rear_windshield_wipers.label }}<br>
+              {{ form.rear_windshield_wipers(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>14. Rear windshield clarity and visibility</label>
+            <div class="radio-options">
+              {{ form.rear_windshield_clarity.label }}<br>
+              {{ form.rear_windshield_clarity(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- Tail Gate -->
+        <div class="inspection-item">
+            <label>15. Tail Gate Condition (scratches, dents)</label>
+            <div class="radio-options">
+              {{ form.tail_gate_condition.label }}<br>
+              {{ form.tail_gate_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>16. Proper alignment of the tail gate</label>
+            <div class="radio-options">
+              {{ form.tail_gate_alignment.label }}<br>
+              {{ form.tail_gate_alignment(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>17. Tail gate functionality (locking mechanism)</label>
+            <div class="radio-options">
+              {{ form.tail_gate_functionality.label }}<br>
+              {{ form.tail_gate_functionality(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- Rear Bumper -->
+        <div class="inspection-item">
+            <label>18. Rear Bumper Condition</label>
+            <div class="radio-options">
+              {{ form.rear_bumper_condition.label }}<br>
+              {{ form.rear_bumper_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>19. Rear bumper alignment with vehicle body</label>
+            <div class="radio-options">
+              {{ form.rear_bumper_alignment.label }}<br>
+              {{ form.rear_bumper_alignment(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>20. Scratches on rear bumper</label>
+            <div class="radio-options">
+              {{ form.rear_bumper_scratches.label }}<br>
+              {{ form.rear_bumper_scratches(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- Engine Bay -->
+        <div class="inspection-item">
+            <label>21. Oil leaks in engine bay</label>
+            <div class="radio-options">
+              {{ form.engine_oil_leaks.label }}<br>
+              {{ form.engine_oil_leaks(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>22. Coolant level</label>
+            <div class="radio-options">
+              {{ form.coolant_level.label }}<br>
+              {{ form.coolant_level(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>23. Engine oil level</label>
+            <div class="radio-options">
+              {{ form.engine_oil_level.label }}<br>
+              {{ form.engine_oil_level(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>24. Washer fluid level</label>
+            <div class="radio-options">
+              {{ form.washer_fluid_level.label }}<br>
+              {{ form.washer_fluid_level(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>25. Electrical wiring condition</label>
+            <div class="radio-options">
+              {{ form.wiring_condition.label }}<br>
+              {{ form.wiring_condition(class="form-check-input") }}
+            </div>
+        </div>
+
+        <!-- Tyres -->
+        <h4>Tyres</h4>
+
+        <div class="inspection-item">
+            <label>26. Tyre Damage</label>
+            <div class="radio-options">
+              {{ form.tyre_damage.label }}<br>
+              {{ form.tyre_damage(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>27. Tyre Manufacturing Date</label>
+            <div class="radio-options">
+              {{ form.tyre_manufacturing_date.label }}<br>
+              {{ form.tyre_manufacturing_date(class="form-check-input") }}
+            </div>
+        </div>
+
+        <div class="inspection-item">
+            <label>28. Tyre Grip Condition</label>
+            <div class="radio-options">
+              {{ form.tyre_grip.label }}<br>
+              {{ form.tyre_grip(class="form-check-input") }}
+            </div>
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div class="form-group">
+          {{ form.notes.label(class="form-label") }}
+          {{ form.notes(class="form-control", rows=3) }}
+      </div>
+
+      <!-- Submit Button -->
+      <div class="form-group">
+          <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
+      </div>
     </div>
 
-    <h4>Exterior Inspection</h4>
-    <div class="form-group">
-      {{ form.exterior.label(class="form-label") }}
-      {{ form.exterior(class="form-control") }}
-      {% if form.exterior.errors %}
-        <div class="text-danger">{{ form.exterior.errors[0] }}</div>
-      {% endif %}
-    </div>
-
-    <h4>Interior Inspection</h4>
-    <div class="form-group">
-      {{ form.interior.label(class="form-label") }}
-      {{ form.interior(class="form-control") }}
-      {% if form.interior.errors %}
-        <div class="text-danger">{{ form.interior.errors[0] }}</div>
-      {% endif %}
-    </div>
-
-    <h4>Under the Hood Inspection</h4>
-    <div class="form-group">
-      {{ form.under_hood.label(class="form-label") }}
-      {{ form.under_hood(class="form-control") }}
-      {% if form.under_hood.errors %}
-        <div class="text-danger">{{ form.under_hood.errors[0] }}</div>
-      {% endif %}
-    </div>
-
-    <h4>Functional Inspection</h4>
-    <div class="form-group">
-      {{ form.functional.label(class="form-label") }}
-      {{ form.functional(class="form-control") }}
-      {% if form.functional.errors %}
-        <div class="text-danger">{{ form.functional.errors[0] }}</div>
-      {% endif %}
-    </div>
-
-    <h4>Safety Equipment Inspection</h4>
-    <div class="form-group">
-      {{ form.safety.label(class="form-label") }}
-      {{ form.safety(class="form-control") }}
-      {% if form.safety.errors %}
-        <div class="text-danger">{{ form.safety.errors[0] }}</div>
-      {% endif %}
-    </div>
-
-    <h4>Notes and Photos</h4>
-    <div class="form-group">
-      {{ form.notes.label(class="form-label") }}
-      {{ form.notes(class="form-control", rows=3) }}
-      {% if form.notes.errors %}
-        <div class="text-danger">{{ form.notes.errors[0] }}</div>
-      {% endif %}
-    </div>
-
-    <div class="form-group">
-      <label for="photos">Upload Photos (Optional)</label>
-      <input type="file" name="photos" multiple class="form-control">
-    </div>
-
-    <button type="submit" class="btn btn-primary">{{ form.submit.label }}</button>
-  </form>
+    </form>
+  </div>
 {% endblock %}

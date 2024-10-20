@@ -3,72 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
+    <title>Car Checker - Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}">
 </head>
 <body>
-    <div class="container">
-        {% with messages = get_flashed_messages(with_categories=True) %}
-            {% if messages %}
-                <div>
-                    {% for category, message in messages %}
-                        <div class="alert alert-{{ category }}">{{ message }}</div>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        {% endwith %}
-        
-        {% block content %}
-        {% endblock %}
-    </div>
-    <div class="dashboard-container">
-        <h1>Welcome, {{ name }}!</h1>
-        
-        <div class="dashboard-buttons">
-            <!-- Add Vehicle Button -->
-            <a href="{{ url_for('add_vehicle') }}" class="btn">Add Vehicle Details</a>
-            
-            <!-- Inspect Vehicle Button -->
-            <a href="{{ url_for('inspect') }}" class="btn">Inspect Vehicle</a>
-            
-            <!-- View Previous Reports Button -->
-            <a href="#" class="btn">View Previous Reports</a>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="navbar-left">
+            <span class="app-name">Car Checker</span>
+        </div>
+        <div class="navbar-right">
+            <span class="user-name">{{ name }}</span>
+            <img src="{{ url_for('static', filename='img/user-icon.png') }}" alt="User Icon" class="user-icon" onclick="toggleUserMenu()">
+            <div id="user-menu" class="user-menu">
+                <a href="#">Profile Edit</a>
+                <a href="#">Logout</a>
+            </div>
+        </div>
+    </nav>
 
-            <!-- User Management Settings Button -->
-            <a href="#" class="btn">User Management Settings</a> 
+    <!-- Dashboard content -->
+    <div class="dashboard-container">
+        <h1>Hello! {{ name }}</h1>
+        <h1>How can we help today?</h1>
+        
+        <div class="options">
+            <!-- Vehicle Inspection Button -->
+            <div class="option">
+                <h3>Pre-delivery Inspection</h3>
+                <p>Begin Vehicle Inspection</p>
+                <a href="{{ url_for('inspect') }}" class="btn">Inspect Now</a>
+            </div>
+
+            <!-- Documentation Button -->
+            <div class="option">
+                <h3>Documents</h3>
+                <p>Check Required Documents</p>
+                <a href="#" class="btn">Check Documents</a>
+            </div>
         </div>
     </div>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background-color: #f4f4f4;
+    <script>
+        function toggleUserMenu() {
+            var menu = document.getElementById('user-menu');
+            menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
         }
-        .dashboard-container {
-            text-align: center;
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+        // Close the user menu when clicking outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.user-icon')) {
+                var menu = document.getElementById('user-menu');
+                if (menu.style.display === 'block') {
+                    menu.style.display = 'none';
+                }
+            }
         }
-        h1 {
-            margin-bottom: 30px;
-        }
-        .dashboard-buttons .btn {
-            display: block;
-            margin: 10px 0;
-            padding: 10px 20px;
-            background-color: #007BFF;
-            color: white;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .dashboard-buttons .btn:hover {
-            background-color: #0056b3;
-        }
-    </style>
+    </script>
 </body>
 </html>
