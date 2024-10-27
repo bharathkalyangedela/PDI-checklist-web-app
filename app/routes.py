@@ -164,32 +164,23 @@ def inspect():
                  'uncomfortable', 'defects_occurring', 'not_available', 'misalignment']
             
             # Define pass criteria (examples added, adjust as needed)
-            pass_criteria = [
-                'no_noise', 'no_scratches', 'no_leaks', 'working_properly', 'intact', 
-                'aligned', 'sealed', 'functional', 'clean', 'good_condition', 'clear', 
-                'comfortable', 'available', 'properly_working'
-            ]
+            pass_criteria = ['no_noise', 'no_scratches', 'no_leaks', 'working_properly', 'aligned', 'sealed', 'new', 
+                 'comfortable', 'clear', 'full', 'functional', 'good_condition', 'yes']
             
             # Count pass/fail fields and generate the results dictionary
             for field, value in form.data.items():
                 if field != 'csrf_token' and isinstance(value, str):
                     value = value.strip().lower()
-                    
-                    # Check if value meets pass criteria
-                    if any(pass_word in value for pass_word in pass_criteria):
-                        pass_count += 1
-                        results[field] = "Passed: " + value
-                    
-                    # Check if value meets fail criteria
-                    elif any(fail_word in value for fail_word in fail_criteria):
+
+                    # Check for fail criteria first
+                    if any(fail_word in value for fail_word in fail_criteria):
                         fail_count += 1
-                        results[field] = "Failed: " + value
-                    
-                    # Neutral values (e.g., empty or not meeting any criteria)
-                    elif value:
-                        pass_count += 1  # Consider non-empty neutral as passed
-                        results[field] = "Passed: " + value
-                    
+                        results[field] = value  # Only add to results if it is a failure
+
+                    # Check for pass criteria (optional: you can still track passes if needed)
+                    elif any(pass_word in value for pass_word in pass_criteria):
+                        pass_count += 1
+                                
             # Prepare defects identified for results
             defects_identified = {field: value for field, value in results.items() if any(fail_word in value for fail_word in fail_criteria)}
 
