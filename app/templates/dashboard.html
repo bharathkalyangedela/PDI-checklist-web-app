@@ -10,14 +10,14 @@
     <!-- Navbar -->
     <nav class="navbar">
         <div class="navbar-left">
-            <span class="app-name">Car Checker</span>
+            <span class="app-name">Kar's PDI Checklist</span>
         </div>
         <div class="navbar-right">
             <span class="user-name">{{ name }}</span>
-            <img src="{{ url_for('static', filename='img/user-icon.png') }}" alt="User Icon" class="user-icon" onclick="toggleUserMenu()">
+            <img src="{{ url_for('static', filename='images/user.png') }}" alt="User Icon" class="user-icon" onclick="toggleUserMenu()">
             <div id="user-menu" class="user-menu">
                 <a href="#">Profile Edit</a>
-                <a href="#">Logout</a>
+                <a href="{{ url_for('logout') }}">Logout</a>
             </div>
         </div>
     </nav>
@@ -39,7 +39,7 @@
             <div class="option">
                 <h3>Documents</h3>
                 <p>Check Required Documents</p>
-                <a href="#" class="btn">Check Documents</a>
+                <a href="{{ url_for('document') }}" class="btn">Check Documents</a>
             </div>
         </div>
     </div>

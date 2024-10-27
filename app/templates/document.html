@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Delivery Checklist</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            font-size: 28px;
+            color: #333;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            margin: 10px 0;
+        }
+        label {
+            font-size: 18px;
+            color: #333;
+        }
+        input[type="checkbox"] {
+            margin-right: 10px;
+        }
+        .tip {
+            font-size: 14px;
+            color: #555;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Peace of Mind Before Delivery</h1>
+        <p>Before taking delivery of a car, it's crucial to verify the following documents and details. Failure to do so could lead to potential legal and financial issues later.</p>
+
+        <ul>
+            <li><input type="checkbox" id="paperwork"><label for="paperwork">Read the paperwork! Don't take anybody's word for anything. Make sure all the blanks in the contract are filled in.</label></li>
+            <li><input type="checkbox" id="invoice"><label for="invoice">Invoice. (Check that the Chassis and Engine number of the car matches with the Invoice and/or Challan).</label></li>
+            <li><input type="checkbox" id="sales_certificate"><label for="sales_certificate">Sales certificate.</label></li>
+            <li><input type="checkbox" id="payment_receipts"><label for="payment_receipts">All payment receipts.</label></li>
+            <li><input type="checkbox" id="registration_book"><label for="registration_book">Registration book or temporary certificate (Some States). Is your name spelt correctly? Are the car chassis/engine number matching with the actual?</label></li>
+            <li><input type="checkbox" id="insurance"><label for="insurance">Insurance: Ensure that coverage is valid and active.</label></li>
+            <li><input type="checkbox" id="puc"><label for="puc">Original PUC certificate. This is valid for one year.</label></li>
+            <li><input type="checkbox" id="owners_manual"><label for="owners_manual">Owners Manual.</label></li>
+            <li><input type="checkbox" id="duplicate_keys"><label for="duplicate_keys">Duplicate Keys.</label></li>
+            <li><input type="checkbox" id="warranty"><label for="warranty">Original warranty with all relevant dealership stamps.</label></li>
+            <li><input type="checkbox" id="extended_warranty"><label for="extended_warranty">Extended Warranty (If opted for).</label></li>
+            <li><input type="checkbox" id="battery_warranty"><label for="battery_warranty">Warranty of third-party items such as battery, tyres etc.</label></li>
+            <li><input type="checkbox" id="roadside_assistance"><label for="roadside_assistance">Roadside assistance Contact details.</label></li>
+            <li><input type="checkbox" id="business_cards"><label for="business_cards">Business cards of dealership and service personnel.</label></li>
+        </ul>
+
+        <p class="tip">Tip: Take the car for a test drive to assess its performance and identify any issues.</p>
+    </div>
+</body>
+</html>

@@ -56,22 +56,22 @@ class InspectionForm(FlaskForm):
     switch_illumination = SelectField('Switch illumination and indicator light', choices=[('Working', 'Working'), ('Not Working', 'Not Working')])
 
     # Exterior - Front bumper
-    front_bumper_condition = SelectField('Front bumper condition', choices=[('Good', 'Good'), ('Defect', 'Defect')])
-    front_bumper_alignment = SelectField('Bumper alignment with vehicle body', choices=[('Perfect', 'Perfect'), ('Misalignment', 'Misalignment')])
-    fog_lights = SelectField('Functionality (fog lights, sensors)', choices=[('Perfect', 'Perfect'), ('Not Working', 'Not Working')])
-    bumper_scratches = SelectField('Scratches on bumper', choices=[('Clean', 'Clean'), ('Scratches', 'Scratches')])
+    front_bumper_condition = RadioField('Front bumper condition', choices=[('Good', 'Good'), ('Defect', 'Defect')], validators=[DataRequired()])
+    front_bumper_alignment = RadioField('Bumper alignment with vehicle body', choices=[('Perfect', 'Perfect'), ('Misalignment', 'Misalignment')], validators=[DataRequired()])
+    fog_lights = RadioField('Functionality (fog lights, sensors)', choices=[('Perfect', 'Perfect'), ('Not Working', 'Not Working')], validators=[DataRequired()])
+    bumper_scratches = RadioField('Scratches on bumper', choices=[('Clean', 'Clean'), ('Scratches', 'Scratches')], validators=[DataRequired()])
 
 
     # Inspection Fields for Hood
-    hood_condition = RadioField('Hood Condition', choices=[('good', 'Good'), ('scratched', 'Scratched'), ('dented', 'Dented')], validators=[DataRequired()])
-    hood_alignment = RadioField('Hood Alignment', choices=[('aligned', 'Aligned'), ('misaligned', 'Misaligned')], validators=[DataRequired()])
-    hood_functionality = RadioField('Hood Functionality', choices=[('working', 'Working'), ('faulty', 'Faulty')], validators=[DataRequired()])
+    hood_condition = RadioField('Hood Condition (scratches, dents)', choices=[('good', 'Good'), ('scratched', 'Scratched'), ('dented', 'Dented')], validators=[DataRequired()])
+    hood_alignment = RadioField('Proper alignment of the hood', choices=[('aligned', 'Aligned'), ('misaligned', 'Misaligned')], validators=[DataRequired()])
+    hood_functionality = RadioField('Functionality of the hood (locking mechanism)', choices=[('working', 'Working'), ('faulty', 'Faulty')], validators=[DataRequired()])
 
     # Front Windshield
     front_windshield_condition = RadioField('Front Windshield Condition', choices=[('good', 'Good'), ('scratched', 'Scratched'), ('cracked', 'Cracked')], validators=[DataRequired()])
     windshield_sealing = RadioField('Windshield Sealing', choices=[('sealed', 'Properly Sealed'), ('not_sealed', 'Not Properly Sealed')], validators=[DataRequired()])
-    windshield_wipers_functionality = RadioField('Windshield Wipers Functionality', choices=[('working', 'Working'), ('not_working', 'Not Working')], validators=[DataRequired()])
-    windshield_clarity = RadioField('Windshield Clarity', choices=[('clear', 'Clear'), ('blurry', 'Blurry')], validators=[DataRequired()])
+    windshield_wipers_functionality = RadioField(' Functionality of windshield wipers', choices=[('working', 'Working'), ('not_working', 'Not Working')], validators=[DataRequired()])
+    windshield_clarity = RadioField(' Windshield clarity and visibility', choices=[('clear', 'Clear'), ('blurry', 'Blurry')], validators=[DataRequired()])
 
     # Roof
     roof_noise = RadioField('Roof Noise or Vibration', choices=[('no_noise', 'No Noise'), ('noise', 'Noise Detected')], validators=[DataRequired()])
@@ -80,9 +80,9 @@ class InspectionForm(FlaskForm):
 
     # Rear Windshield
     rear_windshield_condition = RadioField('Rear Windshield Condition', choices=[('good', 'Good'), ('scratched', 'Scratched'), ('cracked', 'Cracked')], validators=[DataRequired()])
-    rear_windshield_sealing = RadioField('Rear Windshield Sealing', choices=[('sealed', 'Properly Sealed'), ('not_sealed', 'Not Properly Sealed')], validators=[DataRequired()])
+    rear_windshield_sealing = RadioField('Properly installed and sealed with rubber beadings', choices=[('sealed', 'Properly Sealed'), ('not_sealed', 'Not Properly Sealed')], validators=[DataRequired()])
     rear_windshield_wipers = RadioField('Rear Windshield Wipers Functionality', choices=[('working', 'Working'), ('not_working', 'Not Working')], validators=[DataRequired()])
-    rear_windshield_clarity = RadioField('Rear Windshield Clarity', choices=[('clear', 'Clear'), ('blurry', 'Blurry')], validators=[DataRequired()])
+    rear_windshield_clarity = RadioField('Windshield clarity and visibility', choices=[('clear', 'Clear'), ('blurry', 'Blurry')], validators=[DataRequired()])
 
     # Tail Gate
     tail_gate_condition = RadioField('Tail Gate Condition', choices=[('good', 'Good'), ('scratched', 'Scratched'), ('dented', 'Dented')], validators=[DataRequired()])
@@ -102,7 +102,7 @@ class InspectionForm(FlaskForm):
     wiring_condition = RadioField('Electrical Wiring Condition', choices=[('good', 'Good'), ('damaged', 'Damaged')], validators=[DataRequired()])
 
     # Tyres
-    tyre_damage = RadioField('Tyre Damage', choices=[('no_damage', 'No Damage'), ('damaged', 'Damaged')], validators=[DataRequired()])
+    tyre_damage = RadioField('Tyre Damage', choices=[('good', 'Good'), ('damaged', 'Damaged')], validators=[DataRequired()])
     tyre_manufacturing_date = RadioField('Tyre Manufacturing Date', choices=[('recent', 'Recent'), ('old', 'Old')], validators=[DataRequired()])
     tyre_grip = RadioField('Tyre Grip Condition', choices=[('good', 'Good'), ('worn_out', 'Worn Out')], validators=[DataRequired()])
 

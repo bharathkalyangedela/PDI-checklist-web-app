@@ -11,8 +11,41 @@ body {
     background-image:url('https://images.pexels.com/photos/4488657/pexels-photo-4488657.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
-    height: 100vh;
+    background-position: left;
+    height: fit-content;
+}
+
+/* Navbar styling */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #4d4d4d7e;
+  padding: 10px 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  color: white;
+}
+
+.navbar-left .app-name {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.navbar-right {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-right .user-name {
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.navbar-right .user-icon {
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  border-radius: 50%;
 }
 
 /* User menu dropdown */
@@ -49,7 +82,7 @@ body {
     background-color: #f8d7da;
     color: #721c24;
     padding: 10px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
     position: relative;
     border: 1px solid #f5c6cb;
     border-radius: 5px;
@@ -78,9 +111,10 @@ body {
 }
 
 .inspect-container {
-    margin: 20px;
+    margin: 100px 300px 100px 300px;
     padding: 20px;
-    background-color: #f9f9f9;
+    background-color: #7a7a7a9e;
+    color: white;
     border-radius: 8px;
   }
   
@@ -100,19 +134,45 @@ body {
   }
   
   .inspection-item {
-    margin-bottom: 15px;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 25px;
+    padding: 0 20px;
   }
+
+
+  .question-content {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
+  }
+
+  .question-image {
+    width: 50px; /* Adjust size as needed */
+    height: auto;
+    margin-right: 10px; /* Spacing between image and label */
+  }
+
+
+
   
   .inspection-item label {
     font-size: 16px;
   }
   
   .radio-options {
-    margin-top: 5px;
+    margin-top: 10px;
   }
   
   .form-check-input {
     margin-right: 10px;
+    border-radius: 5px;
+  }
+
+  .form-check-input li{
+    list-style: none;
+    margin-top: 10px;
   }
   
   textarea.form-control {

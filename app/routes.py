@@ -1,8 +1,14 @@
-from flask import render_template, redirect, url_for, flash, request
+from flask import render_template, redirect, url_for, flash, request, jsonify
 from app import app, db, bcrypt
 from app.forms import RegistrationForm, LoginForm, AddVehicleForm, InspectionForm
 from app.models import User, Vehicle, Inspection
 from flask_login import login_user, logout_user, login_required, current_user
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import io, ast, json
+import base64
+from collections import defaultdict
 
 @app.route('/')
 @app.route('/home')
@@ -80,7 +86,6 @@ def inspect():
     # Populate the vehicle choices (ID, Name)
     form.vehicle_id.choices = [(vehicle.id, f"{vehicle.brand} {vehicle.model}") for vehicle in vehicles]
     
-    # Check if the request method is POST for form submission
     if request.method == 'POST' and form.validate_on_submit():
         selected_vehicle = form.vehicle_id.data
 
@@ -90,7 +95,7 @@ def inspect():
 
         # Create a new inspection entry
         inspection = Inspection(
-            vehicle_id=selected_vehicle,  # Use the selected vehicle
+            vehicle_id=selected_vehicle,
             dashboard_defects=form.dashboard_defects.data,
             seat_condition=form.seats_condition.data,
             seat_comfort=form.seat_comfort.data,
@@ -145,63 +150,66 @@ def inspect():
         try:
             db.session.commit()
 
-             # Calculate pass/fail percentages
+            # Count pass/fail fields and generate the results dictionary
             pass_count = 0
             fail_count = 0
             results = {}
-
-            # Define the fail criteria (what counts as a defect)
-            fail_criteria = ['Defect', 'No', 'Defects', 'Hard', 'Not Working', 'Faulty', 'Scratches', 'Blurry', 'Damaged', 'Low', 'Old', 'Worn Out']
-
-            # Count passed/failed fields
+ 
+            fail_criteria = ['dented', 'misaligned', 'cracked', 'not properly sealed', 'noice detected', 'worn', 
+                 'leaking', 'scratched', 'defect', 'no', 'defects', 'hard', 'not working', 
+                 'faulty', 'scratches', 'blurry', 'damaged', 'low', 'old', 'worn out', 
+                 'uncomfortable', 'defects occurring', 'not available', 'misalignment']
+            
             for field, value in form.data.items():
-                if field != 'csrf_token' and value in fail_criteria:
+                if field != 'csrf_token' and isinstance(value, str):
+                    value = value.strip().lower()
+
+                if value in fail_criteria:
                     fail_count += 1
                     results[field] = value
-                else:
+                elif value:  # Only increment pass_count for non-empty fields
                     pass_count += 1
 
-            total_tests = pass_count + fail_count
-            pass_percentage = (pass_count / total_tests) * 100
-            fail_percentage = (fail_count / total_tests) * 100
 
-            # Redirect to the report page with the calculated data
-            flash('Vehicle inspection recorded successfully.', 'success')
-            return redirect(url_for('report', pass_percentage=pass_percentage, fail_percentage=fail_percentage, results=results))
-            
+            total_tests = pass_count + fail_count
+            pass_percentage = (pass_count / total_tests) * 100 if total_tests > 0 else 0
+            fail_percentage = (fail_count / total_tests) * 100 if total_tests > 0 else 0
+
+
+
+            # Serialize the results dictionary to JSON
+            return redirect(url_for('report', pass_percentage=pass_percentage, fail_percentage=fail_percentage, results=json.dumps(results)))
+
         except Exception as e:
             db.session.rollback()  # Rollback the session if an error occurs
-            print(f"Error during commit: {e}")  # Print the error message
+            print(f"Error during commit: {e}")
             flash('An error occurred while recording the inspection. Please try again.', 'danger')
-    else:
-        # Print and log the errors for debugging
-        for field, errors in form.errors.items():
-            for error in errors:
-                print(f"Error in {getattr(form, field).label.text}: {error}")
-        flash('Please correct the errors in the form.', 'danger')
 
-    return render_template('inspect.html', form=form, vehicles=vehicles)
+    
 
+    return render_template('inspect.html', form=form, vehicles=vehicles, name=current_user.username)
 
 @app.route('/report')
 @login_required
 def report():
     pass_percentage = float(request.args.get('pass_percentage', 0))
     fail_percentage = float(request.args.get('fail_percentage', 0))
-    results = request.args.get('results', {})
+    results_str = request.args.get('results', '{}')
+
+    # Convert the results string back into a dictionary
+    results = ast.literal_eval(results_str)
 
     # Generate pie chart
     labels = ['Pass', 'Fail']
     sizes = [pass_percentage, fail_percentage]
     colors = ['#00ff00', '#ff0000']
-    explode = (0.1, 0)  # explode the 'Pass' slice
+    explode = (0.1, 0)
 
     fig, ax = plt.subplots()
     ax.pie(sizes, explode=explode, labels=labels, colors=colors, autopct='%1.1f%%',
            shadow=True, startangle=90)
-    ax.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
+    ax.axis('equal')
 
-    # Convert plot to PNG image and then to base64 string
     img = io.BytesIO()
     plt.savefig(img, format='png')
     img.seek(0)
@@ -209,3 +217,19 @@ def report():
 
     # Show report page with pie chart and defects
     return render_template('report.html', plot_url=plot_url, results=results)
+
+@app.route('/document')
+def document():
+    return render_template('document.html')
+
+@app.route('/logout')
+@login_required  # Ensure that only logged-in users can access this route
+def logout():
+    # Log out the user
+    logout_user()
+    
+    # Optionally, flash a message to indicate successful logout
+    flash('You have been logged out successfully.', 'success')
+    
+    # Redirect the user to the login page or home page
+    return redirect(url_for('login'))
