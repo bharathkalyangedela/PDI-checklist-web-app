@@ -41,9 +41,9 @@ class InspectionForm(FlaskForm):
     seatbelts = SelectField('Do all the seatbelts work?', choices=[('Yes', 'Yes'), ('No', 'No')])
 
     # Interior - Driver's Seat
-    steering_condition = SelectField('Steering wheel positioning, tilt, telescope, lock, horn, and cruise control', choices=[('Working Accurately', 'Working Accurately'), ('Defects Occurring', 'Defects Occurring')])
+    steering_condition = SelectField('Steering wheel positioning, tilt, telescope, lock, horn, and cruise control', choices=[('Working Accurately', 'Working Accurately'), ('Defects_Occurring', 'Defects Occurring')])
     clutch_pedal = SelectField('Is the clutch pedal soft or Hard?', choices=[('Soft', 'Soft'), ('Hard', 'Hard')])
-    floor_mats = SelectField('Are the floor mats you ordered in the car present?', choices=[('Available', 'Available'), ('Not Available', 'Not Available')])
+    floor_mats = SelectField('Are the floor mats you ordered in the car present?', choices=[('Available', 'Available'), ('Not_Available', 'Not Available')])
     glove_box = SelectField('Does the glove box open properly?', choices=[('Yes', 'Yes'), ('No', 'No')])
 
     # Switch Controls
@@ -69,12 +69,12 @@ class InspectionForm(FlaskForm):
 
     # Front Windshield
     front_windshield_condition = RadioField('Front Windshield Condition', choices=[('good', 'Good'), ('scratched', 'Scratched'), ('cracked', 'Cracked')], validators=[DataRequired()])
-    windshield_sealing = RadioField('Windshield Sealing', choices=[('sealed', 'Properly Sealed'), ('not_sealed', 'Not Properly Sealed')], validators=[DataRequired()])
+    windshield_sealing = RadioField('Windshield Sealing', choices=[('sealed', 'Properly Sealed'), ('not_sealed', 'Not_Properly_Sealed')], validators=[DataRequired()])
     windshield_wipers_functionality = RadioField(' Functionality of windshield wipers', choices=[('working', 'Working'), ('not_working', 'Not Working')], validators=[DataRequired()])
     windshield_clarity = RadioField(' Windshield clarity and visibility', choices=[('clear', 'Clear'), ('blurry', 'Blurry')], validators=[DataRequired()])
 
     # Roof
-    roof_noise = RadioField('Roof Noise or Vibration', choices=[('no_noise', 'No Noise'), ('noise', 'Noise Detected')], validators=[DataRequired()])
+    roof_noise = RadioField('Roof Noise or Vibration', choices=[('no_noise', 'No_Noise'), ('noise', 'Noise_Detected')], validators=[DataRequired()])
     roof_condition = RadioField('Roof Condition', choices=[('good', 'Good'), ('scratched', 'Scratched'), ('dented', 'Dented')], validators=[DataRequired()])
     roof_rails = RadioField('Roof Rails Condition', choices=[('good', 'Good'), ('worn', 'Worn')], validators=[DataRequired()])
 
@@ -95,7 +95,7 @@ class InspectionForm(FlaskForm):
     rear_bumper_scratches = RadioField('Rear Bumper Scratches', choices=[('no_scratches', 'No Scratches'), ('scratched', 'Scratched')], validators=[DataRequired()])
 
     # Engine Bay
-    engine_oil_leaks = RadioField('Oil Leaks in Engine Bay', choices=[('no_leaks', 'No Leaks'), ('leaking', 'Leaking')], validators=[DataRequired()])
+    engine_oil_leaks = RadioField('Oil Leaks in Engine Bay', choices=[('no_leaks', 'No_Leaks'), ('leaking', 'Leaking')], validators=[DataRequired()])
     coolant_level = RadioField('Coolant Level', choices=[('good', 'Good'), ('low', 'Low')], validators=[DataRequired()])
     engine_oil_level = RadioField('Engine Oil Level', choices=[('good', 'Good'), ('low', 'Low')], validators=[DataRequired()])
     washer_fluid_level = RadioField('Washer Fluid Level', choices=[('good', 'Good'), ('low', 'Low')], validators=[DataRequired()])
