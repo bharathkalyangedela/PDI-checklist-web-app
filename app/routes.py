@@ -1,9 +1,12 @@
-from flask import render_template, redirect, url_for, flash, request, jsonify
+from flask import render_template, redirect, url_for, flash, request, jsonify, make_response
 from app import app, db, bcrypt
 from app.forms import RegistrationForm, LoginForm, AddVehicleForm, InspectionForm
 from app.models import User, Vehicle, Inspection
 from flask_login import login_user, logout_user, login_required, current_user
+from urllib.parse import quote
+import json
 import matplotlib
+from fpdf import FPDF
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 import io, ast, json
@@ -155,37 +158,58 @@ def inspect():
             fail_count = 0
             results = {}
  
-            fail_criteria = ['dented', 'misaligned', 'cracked', 'not properly sealed', 'noice detected', 'worn', 
-                 'leaking', 'scratched', 'defect', 'no', 'defects', 'hard', 'not working', 
-                 'faulty', 'scratches', 'blurry', 'damaged', 'low', 'old', 'worn out', 
-                 'uncomfortable', 'defects occurring', 'not available', 'misalignment']
+            fail_criteria = ['dented', 'misaligned', 'cracked', 'not_properly_sealed', 'noise_detected', 'worn', 
+                 'leaking', 'scratched', 'defect', 'no', 'defects', 'hard', 'not_working', 
+                 'faulty', 'scratches', 'blurry', 'damaged', 'low', 'old', 'worn_out', 
+                 'uncomfortable', 'defects_occurring', 'not_available', 'misalignment']
             
+            # Define pass criteria (examples added, adjust as needed)
+            pass_criteria = [
+                'no_noise', 'no_scratches', 'no_leaks', 'working_properly', 'intact', 
+                'aligned', 'sealed', 'functional', 'clean', 'good_condition', 'clear', 
+                'comfortable', 'available', 'properly_working'
+            ]
+            
+            # Count pass/fail fields and generate the results dictionary
             for field, value in form.data.items():
                 if field != 'csrf_token' and isinstance(value, str):
                     value = value.strip().lower()
+                    
+                    # Check if value meets pass criteria
+                    if any(pass_word in value for pass_word in pass_criteria):
+                        pass_count += 1
+                        results[field] = "Passed: " + value
+                    
+                    # Check if value meets fail criteria
+                    elif any(fail_word in value for fail_word in fail_criteria):
+                        fail_count += 1
+                        results[field] = "Failed: " + value
+                    
+                    # Neutral values (e.g., empty or not meeting any criteria)
+                    elif value:
+                        pass_count += 1  # Consider non-empty neutral as passed
+                        results[field] = "Passed: " + value
+                    
+            # Prepare defects identified for results
+            defects_identified = {field: value for field, value in results.items() if any(fail_word in value for fail_word in fail_criteria)}
 
-                if value in fail_criteria:
-                    fail_count += 1
-                    results[field] = value
-                elif value:  # Only increment pass_count for non-empty fields
-                    pass_count += 1
-
-
+            # Calculate percentages
             total_tests = pass_count + fail_count
             pass_percentage = (pass_count / total_tests) * 100 if total_tests > 0 else 0
             fail_percentage = (fail_count / total_tests) * 100 if total_tests > 0 else 0
 
 
+            # Serialize the results dictionary to JSON for reporting
 
-            # Serialize the results dictionary to JSON
-            return redirect(url_for('report', pass_percentage=pass_percentage, fail_percentage=fail_percentage, results=json.dumps(results)))
+            return redirect(url_for('report',
+                        pass_percentage=pass_percentage,
+                        fail_percentage=fail_percentage,
+                        results=json.dumps(defects_identified)))
 
         except Exception as e:
             db.session.rollback()  # Rollback the session if an error occurs
             print(f"Error during commit: {e}")
             flash('An error occurred while recording the inspection. Please try again.', 'danger')
-
-    
 
     return render_template('inspect.html', form=form, vehicles=vehicles, name=current_user.username)
 
@@ -197,7 +221,7 @@ def report():
     results_str = request.args.get('results', '{}')
 
     # Convert the results string back into a dictionary
-    results = ast.literal_eval(results_str)
+    results = json.loads(results_str)
 
     # Generate pie chart
     labels = ['Pass', 'Fail']
@@ -215,12 +239,64 @@ def report():
     img.seek(0)
     plot_url = base64.b64encode(img.getvalue()).decode()
 
+    
+
     # Show report page with pie chart and defects
     return render_template('report.html', plot_url=plot_url, results=results)
 
-@app.route('/document')
+@app.route('/document', methods=['GET', 'POST'])
 def document():
+    if request.method == 'POST':
+        # Get form data
+        checked_documents = request.form.getlist('documents')
+
+        # List of all documents
+        all_documents = [
+            'paperwork', 'invoice', 'sales_certificate', 'payment_receipts',
+            'registration_book', 'insurance', 'puc', 'owners_manual',
+            'duplicate_keys', 'warranty', 'extended_warranty', 'battery_warranty',
+            'roadside_assistance', 'business_cards'
+        ]
+
+        # Determine unchecked documents
+        unchecked_documents = list(set(all_documents) - set(checked_documents))
+
+        return redirect(url_for('report2', unchecked_documents=json.dumps(unchecked_documents)))
+
     return render_template('document.html')
+
+@app.route('/report2')
+def report2():
+    # Get the unchecked documents from the URL parameters
+    unchecked_documents = request.args.get('unchecked_documents', '[]')
+    unchecked_documents = json.loads(unchecked_documents)
+
+    return render_template('report2.html', unchecked_documents=unchecked_documents)
+
+@app.route('/download_report')
+def download_report():
+    # Get the unchecked documents from the URL parameters (if necessary)
+    unchecked_documents = request.args.get('unchecked_documents', '[]')
+    unchecked_documents = json.loads(unchecked_documents)
+
+    # Create a PDF
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    # Add content to the PDF
+    pdf.cell(200, 10, txt="Inspection Report", ln=True, align='C')
+    pdf.cell(200, 10, txt="Unchecked Documents:", ln=True)
+
+    for doc in unchecked_documents:
+        pdf.cell(200, 10, txt=doc, ln=True)
+
+    # Create a response object with the PDF
+    response = make_response(pdf.output(dest='S').encode('latin1'))
+    response.headers['Content-Disposition'] = 'attachment; filename=inspection_report.pdf'
+    response.headers['Content-Type'] = 'application/pdf'
+
+    return response
 
 @app.route('/logout')
 @login_required  # Ensure that only logged-in users can access this route
@@ -233,3 +309,68 @@ def logout():
     
     # Redirect the user to the login page or home page
     return redirect(url_for('login'))
+
+@app.route('/download_inspection_report')
+def download_inspection_report():
+    # Get parameters from the request
+    results = request.args.get('results', '{}')
+    plot_url = request.args.get('plot_url', None)
+
+    # Debug output
+    print("Incoming Results:", results)
+    print("Incoming Plot URL:", plot_url)
+
+    # Safely load results from JSON
+    try:
+        results = json.loads(results)
+    except json.JSONDecodeError as e:
+        print("JSON Decode Error:", e)
+        results = {}
+
+    # Check the structure of results
+    print("Parsed Results:", results)
+
+    # Create a PDF
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+
+    # Title
+    pdf.cell(200, 10, txt="Inspection Report", ln=True, align='C')
+
+    # Check if plot_url is valid
+    if plot_url and "," in plot_url:
+        try:
+            # Extract base64 content for image
+            base64_image = plot_url.split(",")[1]
+            with open("temp_image.png", "wb") as img_file:
+                img_file.write(base64.b64decode(base64_image))  # Decode base64 image
+            pdf.image("temp_image.png", x=10, y=20, w=180)  # Adjust as needed
+            pdf.ln(85)  # Move below the image
+        except Exception as e:
+            print("Error processing plot_url:", e)
+            pdf.cell(200, 10, txt="Error loading image.", ln=True)
+    else:
+        pdf.cell(200, 10, txt="No image available.", ln=True)
+
+    # Add defects identified
+    pdf.cell(200, 10, txt="Defects Identified:", ln=True)
+    
+    if not results:
+        pdf.cell(200, 10, txt="No defects identified. All fields passed inspection!", ln=True)
+    else:
+        for field, defect in results.items():
+            pdf.cell(200, 10, txt=f"{field}: {defect}", ln=True)
+
+    # Create a response object with the PDF
+    response = make_response(pdf.output(dest='S').encode('latin1'))
+    response.headers['Content-Disposition'] = 'attachment; filename=inspection_report.pdf'
+    response.headers['Content-Type'] = 'application/pdf'
+
+    return response
+
+
+
+@app.context_processor
+def utility_processor():
+    return dict(json=json)

@@ -149,9 +149,9 @@ body {
   }
 
   .question-image {
-    width: 50px; /* Adjust size as needed */
+    width: 200px; /* Adjust size as needed */
     height: auto;
-    margin-right: 10px; /* Spacing between image and label */
+    margin-left: 100px; /* Spacing between image and label */
   }
 
 

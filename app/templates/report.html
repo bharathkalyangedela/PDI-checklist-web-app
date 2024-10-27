@@ -4,21 +4,68 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inspection Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        .chart-container {
+            margin: 20px 0;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        ul li {
+            margin: 10px 0;
+            background-color: #fff;
+            padding: 10px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
+        }
+        .no-defects {
+            color: green;
+            font-weight: bold;
+        }
+        a {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        a:hover {
+            background-color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Inspection Report</h1>
 
-    <div>
+    <div class="chart-container">
         <img src="data:image/png;base64,{{ plot_url }}" alt="Pass/Fail Chart">
     </div>
 
     <h2>Defects Identified:</h2>
     <ul>
-        {% for field, defect in results.items() %}
-            <li>{{ field }}: {{ defect }}</li>
-        {% endfor %}
+        {% if results | length == 0 %}
+            <li class="no-defects">No defects identified. All fields passed inspection!</li>
+        {% else %}
+            {% for field, defect in results.items() %}
+                <li>{{ field }}: {{ defect }}</li>
+            {% endfor %}
+        {% endif %}
     </ul>
 
-    <a href="{{ url_for('dashboard', results=results) }}">Download Full Report</a>
+    <a href="{{ url_for('download_inspection_report', results=json.dumps(results), plot_url=plot_url) }}">Download Full Report</a>
+
 </body>
 </html>

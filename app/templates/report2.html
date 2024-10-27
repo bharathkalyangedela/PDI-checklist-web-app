@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inspection Report</title>
+    <style>
+        /* Existing CSS styles */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin-bottom: 10px;
+        }
+
+        ul {
+            list-style-type: none; /* Remove default list styling */
+            padding: 0; /* Remove default padding */
+        }
+
+        li {
+            background-color: #ffffff;
+            margin: 10px 0;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        a {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #2980b9;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        a:hover {
+            background-color: #1f6691;
+        }
+
+        .download-button {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #ffffff;
+            background-color: #27ae60; /* Green button */
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .download-button:hover {
+            background-color: #1e8449; /* Darker green on hover */
+        }
+    </style>
+</head>
+<body>
+    <h1>Inspection Report</h1>
+    
+    <h2>Documents to Check:</h2>
+    <ul>
+        {% if unchecked_documents %}
+            {% for document in unchecked_documents %}
+                <li>{{ document }}</li>
+            {% endfor %}
+        {% else %}
+            <li>All documents checked!</li>
+        {% endif %}
+    </ul>
+
+    <a href="{{ url_for('document') }}">Back to Checklist</a>
+    <a class="download-button" href="{{ url_for('download_report', unchecked_documents=unchecked_documents | tojson) }}">Download Report</a>
+</body>
+</html>
